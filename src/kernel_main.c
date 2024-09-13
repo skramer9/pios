@@ -1,14 +1,30 @@
-
 char glbl[128]; //global variable, defined outside of functions
 
+struct list_element { //element for a linked list
+    struct list_element *next;
+    int data;
+}
+
+//adds an element to a linked list
+list_add(struct list_element *list_head, struct list_element *new_element) {
+
+}
+
+//removes an element from a linked list
+list_remove(struct list_element *element) {
+
+}
 
 unsigned long get_timer_count() {
      unsigned long *timer_count_register = 0x3f003004;
      return *timer_count_register;
 }
 
-wait() { //waits 1 ms
-    int time;
+void wait() { //waits 1 ms
+    int start_time = get_timer_count();
+    while(get_timer_count() - start_time < 1000 ){
+
+    }
 }
 
 void clear_bss() { // set all of bss to 0
@@ -28,6 +44,8 @@ void kernel_main() {
     clear_bss();
 
     int time = get_timer_count();
+
+    wait();
 
     while(1){
     }
