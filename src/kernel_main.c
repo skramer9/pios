@@ -1,4 +1,4 @@
-#include "list.c"
+#include "list.h"
 
 char glbl[128]; //global variable, defined outside of functions
 
@@ -36,8 +36,6 @@ void kernel_main() {
     struct list_element *head = &a;
     list_add(head, &c);
     list_add(head, &b);
-    list_add(head, &a);
-    list_remove(&a);
     list_remove(&b);
     list_remove(&c);
     
