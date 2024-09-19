@@ -33,12 +33,13 @@ void kernel_main() {
     struct list_element c = {NULL, 3}; // next ptr is NULL, end of list
     struct list_element b = {&c, 2}; // next ptr points to c
     struct list_element a = {&b, 1}; // next ptr points to a
-    struct list_element *head = &a;
+    struct list_element *head = NULL;
     list_add(head, &c);
     list_add(head, &b);
-    list_remove(&b);
-    list_remove(&c);
-    
+    list_add(head, &a);
+    list_remove(&head, &a);
+    list_remove(&head, &c);
+    list_remove(&head, &b);    
 
     clear_bss();
 
