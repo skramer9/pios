@@ -1,4 +1,7 @@
 #include "list.h"
+#include "rprintf.h"
+#include "rprintf.c"
+#include "serial.c"
 
 char glbl[128]; //global variable, defined outside of functions
 
@@ -29,6 +32,15 @@ void clear_bss() { // set all of bss to 0
 }
 
 void kernel_main() {
+
+    unsigned int el;
+         asm("mrs %0,CurrentEL"
+         : "=r"(el)
+         :
+         :);
+
+    esp_printf(putc, "hello");
+
 
     struct list_element c = {NULL, 3}; // next ptr is NULL, end of list
     struct list_element b = {&c, 2}; // next ptr points to c
