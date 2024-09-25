@@ -1,7 +1,7 @@
 #include "list.h"
 #include "rprintf.h"
-#include "rprintf.c"
-#include "serial.c"
+#include "serial.h"
+#include "getEL.c"
 
 char glbl[128]; //global variable, defined outside of functions
 
@@ -33,13 +33,7 @@ void clear_bss() { // set all of bss to 0
 
 void kernel_main() {
 
-    unsigned int el;
-         asm("mrs %0,CurrentEL"
-         : "=r"(el)
-         :
-         :);
-
-    esp_printf(putc, "hello");
+    esp_printf(putc, "%d", getEL());
 
     clear_bss();
 
