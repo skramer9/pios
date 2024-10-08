@@ -2,6 +2,7 @@
 #include "rprintf.h"
 #include "serial.h"
 #include "getEL.c"
+#include "page.h"
 
 char glbl[128]; //global variable, defined outside of functions
 
@@ -32,6 +33,18 @@ void clear_bss() { // set all of bss to 0
 }
 
 void kernel_main() {
+
+    struct list_element a = {0,0,1};
+    struct list_element b = {0,0,2};
+    struct list_element c = {0,0,3};
+    struct list_element *head = &a;
+
+    list_add(&head, &b);
+    list_add(&head, &c);
+
+    list_remove(&head, &b);
+    list_remove(&head, &c);
+    list_remove(&head, &a);
 
     esp_printf(putc, "%d", getEL());
 
