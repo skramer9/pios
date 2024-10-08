@@ -34,17 +34,11 @@ void clear_bss() { // set all of bss to 0
 
 void kernel_main() {
 
-    struct list_element a = {0,0,1};
-    struct list_element b = {0,0,2};
-    struct list_element c = {0,0,3};
-    struct list_element *head = &a;
+    struct ppage *free = init_pfa_list();
 
-    list_add(&head, &b);
-    list_add(&head, &c);
+    struct ppage *process1 = allocate_physical_pages(free, 6);
 
-    list_remove(&head, &b);
-    list_remove(&head, &c);
-    list_remove(&head, &a);
+    free_physical_pages(free, process1);
 
     esp_printf(putc, "%d", getEL());
 
