@@ -20,7 +20,7 @@ struct ppage *allocate_physical_pages(unsigned int npages) {
     for(; npages > 0; npages--) {
         list_remove(&free, temp); //remove the page
         list_add(&new_list, temp); //add the page from the temp value to new_list
-        temp = free;
+        temp = &free;
     }
     return new_list;
 }
