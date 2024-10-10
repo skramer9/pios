@@ -4,9 +4,8 @@
 #include "getEL.c"
 #include "page.h"
 
-char glbl[128]; //global variable, defined outside of functions
 
-#define NULL 0
+char glbl[128]; //global variable, defined outside of functions
 
 unsigned long get_timer_count() {
      unsigned long *timer_count_register = 0x3f003004;
@@ -34,17 +33,15 @@ void clear_bss() { // set all of bss to 0
 
 void kernel_main() {
 
-    struct ppage *free = init_pfa_list();
+    init_pfa_list();
 
-    struct ppage *process1 = allocate_physical_pages(free, 6);
+    struct ppage *process1 = allocate_physical_pages(1);
 
-    free_physical_pages(free, process1);
+    free_physical_pages(process1);
 
     esp_printf(putc, "%d", getEL());
 
     clear_bss();
-
-    int time = get_timer_count();
 
     wait();
 
