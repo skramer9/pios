@@ -2,11 +2,13 @@
 
 //adds an element to a linked list
 void list_add(struct list_element **list_head, struct list_element *new_element) {
-    new_element->next = (*list_head); 
-    if (*list_head != 0) {
-        (*list_head)->prev = new_element;
+    if(new_element != *list_head) {
+            new_element->next = (*list_head); 
+        if (*list_head != 0) {
+            (*list_head)->prev = new_element;
+        }
+        *list_head = new_element;
     }
-    *list_head = new_element;
 }
 
 //removes an element from a linked list

@@ -35,7 +35,7 @@ void kernel_main() {
 
     init_pfa_list();
 
-    struct ppage *process1 = allocate_physical_pages(1);
+    struct ppage *process1 = allocate_physical_pages(128);
 
     free_physical_pages(process1);
 

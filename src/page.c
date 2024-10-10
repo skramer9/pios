@@ -15,9 +15,9 @@ void init_pfa_list(void) {
 }
 
 struct ppage *allocate_physical_pages(unsigned int npages) {
-    struct ppage *temp = &free;
+    struct ppage *temp = free;
     struct ppage *new_list = 0;
-    for(; npages > 0; npages--) {
+    for(; npages > 0 && free != 0; npages--) {
         list_remove(&free, temp); //remove the page
         list_add(&new_list, temp); //add the page from the temp value to new_list
         temp = &free;
@@ -27,9 +27,11 @@ struct ppage *allocate_physical_pages(unsigned int npages) {
 
 void free_physical_pages(struct ppage *ppage_list){
     struct ppage *cursor = ppage_list;
+    struct ppage *next;
     while(ppage_list) {
+        next = cursor->next;
         list_remove(&ppage_list, cursor);
         list_add(&free, cursor);
-        cursor = cursor->next;
+        cursor = next;
     }
 }
