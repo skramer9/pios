@@ -33,9 +33,17 @@ void clear_bss() { // set all of bss to 0
 
 void kernel_main() {
 
+    struct list_element a = {0,0,1};
+    struct list_element b = {0,0,2};
+    struct list_element *head = &a;
+    list_add(&head, &b);
+    list_remove(&head, &a);
+    list_remove(&head, &b);
+    list_add(&head, &a);
+
     init_pfa_list();
 
-    struct ppage *process1 = allocate_physical_pages(128);
+    struct ppage *process1 = allocate_physical_pages(12);
 
     free_physical_pages(process1);
 
