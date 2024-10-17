@@ -3,7 +3,9 @@
 #include "serial.h"
 #include "getEL.c"
 #include "page.h"
+#include "mmu.h"
 
+extern struct table_descriptor_stage1 L1table[512];
 
 char glbl[128]; //global variable, defined outside of functions
 
@@ -33,21 +35,15 @@ void clear_bss() { // set all of bss to 0
 
 void kernel_main() {
 
-    struct list_element a = {0,0,1};
-    struct list_element b = {0,0,2};
-    struct list_element *head = &a;
-    list_add(&head, &b);
-    list_remove(&head, &a);
-    list_remove(&head, &b);
-    list_add(&head, &a);
-
     init_pfa_list();
 
-    struct ppage *process1 = allocate_physical_pages(12);
+    struct ppage *test = allocate_physical_pages(4);
 
-    free_physical_pages(process1);
+    free_physical_pages(test);
 
-    esp_printf(putc, "%d", getEL());
+    mapPages(0, 0);
+
+    loadPageTable(L1table);
 
     clear_bss();
 

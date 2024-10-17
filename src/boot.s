@@ -98,7 +98,7 @@ maincore:
 
     // change execution level to EL1
     mov     x2, #0x3c4 // Change execution level to EL1
-    mov     x2, #0x3c0   // Change execution level to EL0
+//    mov     x2, #0x3c0   // Change execution level to EL0
     msr     spsr_el2, x2
     adr     x2, 5f  /* Put the address of the instruction at label 5 (below) into register X2 */
     msr     elr_el2, x2

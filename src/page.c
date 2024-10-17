@@ -9,8 +9,8 @@ struct ppage *free = 0;
 
 void init_pfa_list(void) {
     for(int i = LENGTH - 1; i >= 0; i--) {
-        physical_page_array[i].physical_addr = &physical_page_array[i];
         list_add(&free, &physical_page_array[i]);
+        physical_page_array[i].physical_addr = 0x200000 * (i + 1);
     }
 }
 
@@ -20,7 +20,7 @@ struct ppage *allocate_physical_pages(unsigned int npages) {
     for(; npages > 0 && free != 0; npages--) {
         list_remove(&free, temp); //remove the page
         list_add(&new_list, temp); //add the page from the temp value to new_list
-        temp = &free;
+        temp = free;
     }
     return new_list;
 }
