@@ -20,6 +20,8 @@ OBJS = \
         rprintf.o \
         page.o \
         mmu.o \
+        sd.o \
+        delays.o \
 
 OBJ = $(patsubst %,$(ODIR)/%,$(OBJS))
 

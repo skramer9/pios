@@ -4,22 +4,14 @@
 #include "getEL.c"
 #include "page.h"
 #include "mmu.h"
+#include "sd.h"
+#include "gpio.h"
+#include "fat.h"
+#include "delays.h"
 
 extern struct table_descriptor_stage1 L1table[512];
 
 char glbl[128]; //global variable, defined outside of functions
-
-unsigned long get_timer_count() {
-     unsigned long *timer_count_register = 0x3f003004;
-     return *timer_count_register;
-}
-
-void wait() { //waits 1 ms
-    int start_time = get_timer_count();
-    while(get_timer_count() - start_time < 1000 ){
-
-    }
-}
 
 void clear_bss() { // set all of bss to 0
     extern int __bss_start, __bss_end; //external variables, from kernel.ld
