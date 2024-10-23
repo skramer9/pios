@@ -22,6 +22,7 @@ OBJS = \
         mmu.o \
         sd.o \
         delays.o \
+	hw8.o \
 
 OBJ = $(patsubst %,$(ODIR)/%,$(OBJS))
 

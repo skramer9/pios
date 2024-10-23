@@ -39,7 +39,7 @@ void kernel_main() {
 
     clear_bss();
 
-    wait();
+    wait(1);
 
     while(1){
     }
