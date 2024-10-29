@@ -23,6 +23,7 @@ OBJS = \
         sd.o \
         delays.o \
 	hw8.o \
+	string.o \
 
 OBJ = $(patsubst %,$(ODIR)/%,$(OBJS))
 

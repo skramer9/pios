@@ -160,7 +160,7 @@ int sd_cmd(unsigned int code, unsigned int arg)
     *EMMC_INTERRUPT=*EMMC_INTERRUPT; *EMMC_ARG1=arg; *EMMC_CMDTM=code;
     if(code==CMD_SEND_OP_COND) wait(1000); else
     if(code==CMD_SEND_IF_COND || code==CMD_APP_CMD) wait(100);
-    if((r=sd_int(INT_CMD_DONE))) {esp_printf(putc, "ERROR: failed to send EMMC command\n");sd_err=r;return 0;}
+    if(wait(1000)) {esp_printf(putc, "ERROR: failed to send EMMC command\n");sd_err=r;return 0;} //comment back in 'r=sd_int(INT_CMD_DONE),
     r=*EMMC_RESP0;
     if(code==CMD_GO_IDLE || code==CMD_APP_CMD) return 0; else
     if(code==(CMD_APP_CMD|CMD_RSPNS_48)) return r&SR_APP_CMD; else
@@ -204,7 +204,7 @@ int sd_readblock(unsigned int lba, unsigned char *buffer, unsigned int num)
             sd_cmd(CMD_READ_SINGLE,(lba+c)*512);
             if(sd_err) return 0;
         }
-        if((r=sd_int(INT_READ_RDY))){esp_printf(putc, "\rERROR: Timeout waiting for ready to read\n");sd_err=r;return 0;}
+        if(wait(1000)){esp_printf(putc, "\rERROR: Timeout waiting for ready to read\n");sd_err=r;return 0;} //comment back in 'r=sd_int(INT_READ_RDY)'
         for(d=0;d<128;d++) buf[d] = *EMMC_DATA;
         c++; buf+=128;
     }
@@ -333,7 +333,7 @@ int sd_init()
     *EMMC_BLKSIZECNT = (1<<16) | 8;
     sd_cmd(CMD_SEND_SCR,0);
     if(sd_err) return sd_err;
-    if(sd_int(INT_READ_RDY)) return SD_TIMEOUT;
+    if(wait(1000)) return SD_TIMEOUT; //comment back in 'sd_int(INT_READ_RDY)'
 
     r=0; cnt=100000; while(r<2 && cnt) {
         if( *EMMC_STATUS & SR_READ_AVAILABLE )

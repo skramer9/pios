@@ -8,6 +8,7 @@
 #include "gpio.h"
 #include "fat.h"
 #include "delays.h"
+#include "hw8.h"
 
 extern struct table_descriptor_stage1 L1table[512];
 
@@ -26,6 +27,8 @@ void clear_bss() { // set all of bss to 0
 }
 
 void kernel_main() {
+
+    fatInit();
 
     init_pfa_list();
 
