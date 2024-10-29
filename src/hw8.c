@@ -16,7 +16,7 @@ int fatInit() {
     bs = bootSector; // Point boot_sector struct to the boot sector so we can read fields
     esp_printf(putc, "bs: %s", bs);
     // Print out some of the elements of the BIOS information block using rprintf...
-    esp_printf(putc, "boot signature: %i\nnumber of fat tables: %i\nnumber of sectors per fat: %i\nnumber of reserved sectors: %i\nnumber of hidden sectors: %i\n", bs->boot_signature, bs->num_fat_tables, bs->num_sectors_per_fat, bs->num_reserved_sectors, bs->num_hidden_sectors);
+    esp_printf(putc, "boot signature: %x\nnumber of fat tables: %i\nnumber of sectors per fat: %i\nnumber of reserved sectors: %i\nnumber of hidden sectors: %i\n", bs->boot_signature, bs->num_fat_tables, bs->num_sectors_per_fat, bs->num_reserved_sectors, bs->num_hidden_sectors);
     // TODO: Validate the boot signature = 0xaa55
     if (bs->boot_signature != 0xaa55) {
         return 0;
@@ -25,9 +25,13 @@ int fatInit() {
     if (compareFilenames(bs->fs_type, "FAT12") != 0){
 	return 0;
     }
-    esp_printf(putc, "Print this if we made it past the checks");
+    esp_printf(putc, "Print this if we made it past the checks\n");
     // TODO: Read FAT table from the SD card into array fat_table
     sd_readblock(0, fat_table, 1); //totally uninformed code right here
+    for(int i = 0; i < 512; i++) {
+        esp_printf(putc, "%x", bootSector[i]);
+    }
+    esp_printf(putc, "\n");
     // TODO: Compute root_sector as:
     int root_sector = bs->num_fat_tables + bs->num_sectors_per_fat + bs->num_reserved_sectors + bs->num_hidden_sectors;
 }
