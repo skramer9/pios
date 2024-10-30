@@ -12,6 +12,8 @@
 
 extern struct table_descriptor_stage1 L1table[512];
 
+extern char file_buf[8 * 512];
+
 char glbl[128]; //global variable, defined outside of functions
 
 void clear_bss() { // set all of bss to 0
@@ -29,6 +31,10 @@ void clear_bss() { // set all of bss to 0
 void kernel_main() {
 
     fatInit();
+
+    fatOpen(file_buf);
+
+    fatRead("file");
 
     init_pfa_list();
 
