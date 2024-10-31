@@ -36,7 +36,7 @@ void kernel_main() {
 
     struct root_directory_entry* rde = fatOpen("test", r);
 
-    fatRead(file_buf, rde, 4096);
+    fatRead(file_buf, rde, 4);
 
     init_pfa_list();
 

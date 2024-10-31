@@ -10,7 +10,7 @@ struct boot_sector *bs;
 char bootSector[SECTOR_SIZE]; // Allocate a global array to store boot sector
 char fat_table[8*SECTOR_SIZE];
 unsigned int root_sector;
-char rde_region[8*SECTOR_SIZE];
+struct root_directory_entry* rde_region;
 struct file current_file;
 char file_buf[8*SECTOR_SIZE];
 
@@ -43,14 +43,15 @@ void fatInit() {
 
 struct root_directory_entry fatOpen(char* filepath, struct root_directory_entry* r) {
    //find rde region and read the table into memory
-   sd_readblock(root_sector, rde_region, 1);
+   sd_readblock(root_sector, rde_region, 8);
    //iterate thru table to find the correct rde
    int counter = 0;
    int found = 0;
-   while(!found && counter < 8 * SECTOR_SIZE) {
-       if(compareFilenames(filepath, rde_region[counter])) {
+
+   while(!found && counter < (8 * SECTOR_SIZE / sizeof(struct root_directory_entry))) {
+       if(compareFilenames(filepath, rde_region[counter].file_name)) {
            found = 1;
-           r = rde_region[counter]; //There is an error in this function
+           *r = rde_region[counter];
        }
        counter++;
    }
@@ -58,9 +59,9 @@ struct root_directory_entry fatOpen(char* filepath, struct root_directory_entry*
 }
 
 void fatRead(char* buf, struct root_directory_entry *r, int n) {
-   int offset = -2 + root_sector + r->cluster * bs->num_sectors_per_cluster;
-   sd_readblock(offset, buf, 1);
-   for(int i = 0; i < n; i++) {
+   int offset = root_sector + ((r->cluster - 2) * bs->num_sectors_per_cluster);
+   sd_readblock(offset, buf, n);
+   for(int i = 0; i < n * SECTOR_SIZE; i++) {
        esp_printf(putc, "%c", buf[i]);
    }
    esp_printf(putc, "\n");
