@@ -2,7 +2,7 @@
 #define __HW8_H
 
 void fatInit();
-void fatOpen(char* filepath);
-void fatRead(char* buf);
+long fatOpen(char* filepath, struct root_directory_entry* r);
+void fatRead(char* buf, struct root_directory_entry *r, int n);
 
 #endif
