@@ -37,7 +37,7 @@ void fatInit() {
     }
     esp_printf(putc, "\n");
     // TODO: Compute root_sector as:
-    int root_sector = bs->num_fat_tables * bs->num_sectors_per_fat + bs->num_reserved_sectors; //should this be num_fat_tables * num_sectors instead of +?
+    root_sector = bs->num_fat_tables * bs->num_sectors_per_fat + bs->num_reserved_sectors; //should this be num_fat_tables * num_sectors instead of +?
     esp_printf(putc, "root sector: %i\n", root_sector); 
 }
 

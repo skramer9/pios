@@ -32,11 +32,11 @@ void kernel_main() {
 
     fatInit();
 
-    struct root_directory_entry* r = 0;
+    struct root_directory_entry r;
 
-    struct root_directory_entry* rde = fatOpen("test", r);
+    struct root_directory_entry* rde = fatOpen("test", &r);
 
-    fatRead(file_buf, rde, 4);
+    fatRead(file_buf, &rde, 4);
 
     init_pfa_list();
 
